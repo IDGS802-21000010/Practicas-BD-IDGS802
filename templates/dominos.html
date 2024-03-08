@@ -1,0 +1,147 @@
+{% extends "layoutV.html" %}
+{%from "_macros.html" import input_Form%}
+{% block content %}
+<form name="pizzeria" action="" id="pizzeria" method="post" novalidate>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="container border mt-2 mb-2 bg-primary rounded">
+        <div class="container">
+            <div class="row" style="display: flex">
+                <div class="col ms-4 me-4 pt-3 pb-3">
+                    {{input_Form(form.nombreP,class="form-control")}}
+                </div>
+                <div class="col ms-2 me-2 pt-3 pb-3">
+                    {{input_Form(form.direccionP,class="form-control")}}
+                </div>
+                <div class="col ms-2 me-2 pt-3 pb-3">
+                    {{input_Form(form.telefonoP,class="form-control")}}
+                </div>
+
+                <div class="col ms-2 me-2 pt-3 pb-3">
+                    {{input_Form(form.fechaRegistro,class="form-control")}}
+                </div>
+            </div>
+    
+    
+            <div class="row" style="display: flex">
+                <div class="col ms-4 me-4 pe-3">
+                    {{input_Form(form.tamP,class="form-control", style="list-style-type:none")}}
+                </div>
+                <div class="col ms-4 me-4 pe-3">
+                    {{input_Form(form.ingdP,class="form-control", style="list-style-type:none")}}
+                </div>
+                <div class="col ms-4 me-4 pe-3">
+                    {{input_Form(form.numPizzas,class="form-control")}}
+                    <button class="btn btn-secondary" type="submit" name="buttonP" value="btnAgregar"
+                        id="btnAgregar">Agregar</button>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div class="container border mt-4 bg-primary rounded">
+        <div class="row mt-3 mb-3" style="display: flex">
+            <div class="col ms-4 me-4 pt-3 pb-3">
+                <table class="table table-striped table-bordered">
+                    <thead class="bg-light">
+                        <tr>
+                            <th></th>
+                            <th>Tamaño</th>
+                            <th>Ingredientes</th>
+                            <th>Num. Pizzas</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {%for pz in Pizzas%}
+                        <tr>
+                            <td><input type="checkbox" name="eliminar[]" value="{{ loop.index }}" /></td>
+                            <td>{{pz.tamP}}</td>
+                            <td>{{pz.ingdP}}.</td>
+                            <td>{{pz.numPizzas}}</td>
+                            <td>{{pz.subT}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+                <div class="row mt-3 mb-5" style="display: flex">
+                    <div class="col ms-4 me-4 pt-3 pb-3">
+                        <button class="btn btn-secondary" type="submit" name="buttonP" value="btnQuitar"
+                            id="btnQuitar">Quitar</button>
+                    </div>
+                    <div class="col ms-4 me-4 pt-3 pb-3">
+                        <button class="btn btn-secondary" type="submit" name="buttonP" value="btnTerminar"
+                            id="btnTerminar">Terminar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col m-3 p-4 border bg-secondary rounded">
+                <p class="text-white">Ventas del dia</p>
+                <table class="table table-striped table-borderless">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {%for pd in Pedidos%}
+                        <tr>
+                            <td>{{pd.nombre}}</td>
+                            <td>total</td>
+                            <td>{{pd.total}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+                <div class="col ps-6">
+                    <p class="text-white">Ventas totales del dia: {{totalD}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 mb-3" style="display: flex;">
+            <div class="col ms-1 me-1 pt-1 pb-1">
+                <div class="col">
+                    {{input_Form(form.diaS,class="form-control", placeholder="Dia")}}
+                    <!--{{input_Form(form.diaS,class="form-control", placeholder="Dia")}}-->
+                    <!--{{input_Form(form.diaB,class="form-control", placeholder="Dia")}}-->
+                </div>
+                <div class="col">
+                    {{input_Form(form.mesS,class="form-control", placeholder="Mes")}}
+                    <!--{{input_Form(form.mesS,class="form-control", placeholder="Mes")}}-->
+                    <!--{{input_Form(form.mesB,class="form-control", placeholder="Dia")}}-->
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary border-white col" type="submit" name="buttonP" value="btnBuscar" id="btnBuscar">Buscar</button>
+                </div>
+            </div>
+            <div class="col-9 ms-4 me-4 pt-3 pb-3">
+                <table class="table table-striped rounded">
+                    <thead class="bg-secondary text-white">
+                        <tr class="d-flex">
+                            <th class="col-2">{{fecha}}</th>
+                            <th class="col-5">Cliente</th>
+                            <th class="col-5">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {%for rg in Registros%}
+                        <tr class="d-flex">
+                            <td class="col-2"></td>
+                            <td class="col-5">{{rg.nombre}}</td>
+                            <td class="col-5">{{rg.total}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+{% endblock%}
